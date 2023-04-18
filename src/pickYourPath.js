@@ -1,9 +1,8 @@
-
-
 let rlSync = require('readline-sync');
-let gameDifficulty;
+
 let gameSize = 6
-do { gameDifficulty = Number(rlSync.question('Pick your path wanderer. (Type 1, 2 or 3) \nFORGIVING (1) \nREALISTIC (2) \nCHALLENGING (3)\n'))
+let gameDifficulty;
+do { gameDifficulty = Number(rlSync.question('Pick your path (Type 1, 2 or 3) \nFORGIVING (1) \nREALISTIC (2) \nCHALLENGING (3)\n'))
 } while(gameDifficulty !== 1 && gameDifficulty !== 2 && gameDifficulty !== 3 )
 
 const setGameDifficulty = (gameDifficulty, gameSize) => {
@@ -17,7 +16,7 @@ const setGameDifficulty = (gameDifficulty, gameSize) => {
       break;
     default: gameDifficultyComp = 1/3
 }
-return Math.ceil(gameSize * gameDifficultyComp);
+  return Math.ceil(gameSize * gameDifficultyComp);
 }
 gameDifficulty = setGameDifficulty(gameDifficulty, gameSize);
 
@@ -62,18 +61,5 @@ const playgame = (difficulty, levelsCleared = 0) => {
 }
 playgame(gameDifficulty);
 
-
-
-
-//create infinite mode where difficulty goes + 1 every time? (after a cetain number of rooms are cleared - logs something new to ramp up)?? mid idea
-
-//scale difficulty with gamesize
-/* 
-bombamount/bombamount = easy ------ only one room is a bomb(maybe add a plus feature tied to the room amount to not make it too easy)
-bombamount/3 (or closest divisble to get a third) = normal --- a third of the rooms are bombs
-bombamount(bombgeneratorrightnow)/ 2 == hard -----hal;f rooms are bombs
-*/
-
-//create objects for the diffent elements instead so you can use methods? traps.clear()/// traps.set()
-
+//Make it playable in browser
 
