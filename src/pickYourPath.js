@@ -1,59 +1,59 @@
 let rlSync = require('readline-sync');
 
-let gameSize = 6
+let gameOptionSize = 6
 let gameDifficulty;
 do { gameDifficulty = Number(rlSync.question('Pick your path (Type 1, 2 or 3) \nFORGIVING (1) \nREALISTIC (2) \nCHALLENGING (3)\n'))
 } while(gameDifficulty !== 1 && gameDifficulty !== 2 && gameDifficulty !== 3 )
 
-const setGameDifficulty = (gameDifficulty, gameSize) => {
-  let gameDifficultyComp;
-  switch(gameDifficulty) {
-    case 1: gameDifficultyComp = 1/8
+const setGameDifficulty = (difficulty, size) => {
+  let trapPercentage;
+  switch(difficulty) {
+    case 1: trapPercentage = 1/8
       break;
-    case 2: gameDifficultyComp = 1/3
+    case 2: trapPercentage = 1/3
       break;
-    case 3: gameDifficultyComp = 1/2
+    case 3: trapPercentage = 1/2
       break;
-    default: gameDifficultyComp = 1/3
+    default: trapPercentage = 1/3
 }
-  return Math.ceil(gameSize * gameDifficultyComp);
+  return Math.ceil(size * trapPercentage);
 }
-gameDifficulty = setGameDifficulty(gameDifficulty, gameSize);
+gameDifficulty = setGameDifficulty(gameDifficulty, gameOptionSize);
 
-let bombGenerator = (num) => Math.floor(Math.random()* num);
+let trapGenerator = (optionSize) => Math.floor(Math.random()* optionSize);
 
 //The size of the game can be changed easier for further development..
-let gameOptionPaths = [];
-const gamePaths = size => {
-  for (let i = size; i > 0; i -= 1) {
-    gameOptionPaths.push(i) 
+let gameSizeArray = [];
+const setGameSize = optionSize => {
+  for (let i = optionSize; i > 0; i -= 1) {
+    gameSizeArray.push(i) 
   }
 }
-gamePaths(gameSize);
+setGameSize(gameOptionSize);
 
-let trapPaths = [];
-const generateGameTraps = level =>  {
+let gameTrapsArray = [];
+const setGameTraps = trapAmount =>  {
   let trap;
-  for( let i = 0; i < level; i += 1 ) {
-    do {trap = bombGenerator(gameSize)
-    }  while (trapPaths.includes(trap))
-    trapPaths.push(trap)
+  for( let i = 0; i < trapAmount; i += 1 ) {
+    do {trap = trapGenerator(gameOptionSize)
+    }  while (gameTrapsArray.includes(trap))
+    gameTrapsArray.push(trap)
   }
 }
-const trapClear = () => trapPaths = [];
+const unsetGameTraps = () => gameTrapsArray = [];
 
 const playerPath = () => {
-    let chosenPath;
-     do { chosenPath =  Number(rlSync.question(`...${gameSize} doors ahead...${gameDifficulty} of them traps...No going back.\n        Type from 1-${gameSize} to pick your path.      \n`)) 
-    } while ( !gameOptionPaths.includes(chosenPath)  )
+  let chosenPath;
+     do { chosenPath =  Number(rlSync.question(`...${gameOptionSize} doors ahead...${gameDifficulty} of them traps...No going back.\n        Type from 1-${gameOptionSize} to pick your path.      \n`)) 
+    } while ( !gameSizeArray.includes(chosenPath)  )
     return chosenPath;
 }
 const playgame = (difficulty, levelsCleared = 0) => {
-  generateGameTraps(difficulty);
-  if (trapPaths.includes(playerPath())) {
+  setGameTraps(difficulty);
+  if (gameTrapsArray.includes(playerPath())) {
     console.log(`${levelsCleared} rooms in, you hit a trap.\nDoes it ever end?`);
         } else {
-          trapClear();
+          unsetGameTraps();
           levelsCleared += 1;
           console.log(`--------${levelsCleared} Rooms cleared. BUT ANOTHER AWAITS---------\n`)
           playgame(difficulty, levelsCleared);
